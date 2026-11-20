@@ -1,0 +1,76 @@
+@if (selectedCategory) {
+  <section class="requirements-section">
+    <div class="section-header">
+      <h2>{{ selectedCategory.name }}</h2>
+      <div class="header-accent"></div>
+    </div>
+    <app-requirement-list
+      [requirements]="selectedCategory.requirements"
+      (requirementSelected)="requirementSelected.emit($event)">
+    </app-requirement-list>
+  </section>
+}
+
+@if (selectedRequirement) {
+  <div class="overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title-cluster">
+          <span class="req-id-badge">{{ selectedRequirement.id }}</span>
+          <span class="modal-label">Requirement Detail</span>
+        </div>
+        <button class="close-btn" (click)="requirementClosed.emit()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <p class="requirement-text">{{ selectedRequirement.verificationRequirement }}</p>
+
+      <div class="meta-row">
+        <span class="meta-pill meta-level">Level {{ selectedRequirement.asvsLevel }}</span>
+        @if (selectedRequirement.cwe) {
+          <span class="meta-pill meta-cwe">CWE-{{ selectedRequirement.cwe }}</span>
+        }
+        @if (selectedRequirement.nist) {
+          <span class="meta-pill meta-nist">{{ selectedRequirement.nist }}</span>
+        }
+      </div>
+
+      <div class="status-row">
+        <h3>Implementation Status</h3>
+        <button
+          (click)="aiExplanationRequested.emit()"
+          [disabled]="aiLoading"
+          class="ai-btn">
+          @if (aiLoading) {
+            <span class="ai-btn-text">Analyzing...</span>
+          } @else {
+            <span class="ai-btn-text">✦ Explain with AI</span>
+          }
+        </button>
+      </div>
+
+      <app-option-group
+        [requirementId]="selectedRequirement.id"
+        [options]="selectedRequirement.options"
+        (optionSelected)="optionSelected.emit($event)">
+      </app-option-group>
+
+      @if (showAiExplanation) {
+        <app-ai-explanation-panel
+          [aiLoading]="aiLoading"
+          [aiExplanation]="aiExplanation"
+          [activeTab]="activeTab"
+          (closePanel)="aiPanelHidden.emit()"
+          (explanationRequested)="aiExplanationRequested.emit()"
+          (bestPracticesRequested)="bestPracticesRequested.emit()"
+          (codeExampleRequested)="codeExampleRequested.emit()"
+          (testingRequested)="testingRequested.emit()"
+          (refreshRequested)="aiExplanationRequested.emit()">
+        </app-ai-explanation-panel>
+      }
+    </div>
+  </div>
+}

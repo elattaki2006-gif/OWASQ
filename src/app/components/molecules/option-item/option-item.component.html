@@ -1,0 +1,12 @@
+<label class="option-item" [class.selected]="option.isSelected"
+  [class.option-valid]="option.id === 1 && option.isSelected"
+  [class.option-invalid]="option.id === 2 && option.isSelected"
+  [class.option-na]="option.id === 3 && option.isSelected">
+  <span class="radio-indicator"></span>
+  <input
+    type="radio"
+    [name]="groupName"
+    [checked]="option.isSelected"
+    (change)="optionSelected.emit(option.id)">
+  <span class="option-label">{{ option.name }}</span>
+</label>

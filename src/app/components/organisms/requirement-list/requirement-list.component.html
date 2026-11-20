@@ -1,0 +1,36 @@
+<table class="req-table">
+  <thead>
+    <tr>
+      <th class="col-id">#</th>
+      <th class="col-req">Requirement</th>
+      <th class="col-level">Level</th>
+      <th class="col-status">Status</th>
+      <th class="col-action">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (req of requirements; track req.id) {
+      <tr class="req-row">
+        <td class="cell-id">{{ req.id }}</td>
+        <td class="cell-req">{{ req.verificationRequirement.substring(0, 150) }}...</td>
+        <td class="cell-level">
+          <span class="level-tag">L{{ req.asvsLevel }}</span>
+        </td>
+        <td class="cell-status">
+          @if (req.valid === 'Valid') {
+            <span class="status-pill status-valid">Valid</span>
+          } @else if (req.valid === 'Invalid') {
+            <span class="status-pill status-invalid">Invalid</span>
+          } @else if (req.valid === 'Not Applicable') {
+            <span class="status-pill status-na">N/A</span>
+          } @else {
+            <span class="status-pill status-pending">Pending</span>
+          }
+        </td>
+        <td class="cell-action">
+          <button class="check-btn" (click)="requirementSelected.emit(req)">Review</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,15 @@
+<div class="category-card" [class.selected]="selected" (click)="selectedCategory.emit(category)">
+  <div class="card-header">
+    <h3>{{ category.name }}</h3>
+    @if (category.asvsLevelAcquired > 0) {
+      <span class="level-pill">L{{ category.asvsLevelAcquired }}</span>
+    }
+  </div>
+  <div class="category-stats">
+    <span class="stat-label">{{ category.validCriteria }}<span class="stat-dim">/{{ category.totalCriteria }}</span></span>
+    <span class="stat-pct">{{ category.validityPercentage }}%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" [style.width.%]="category.validityPercentage"></div>
+  </div>
+</div>
